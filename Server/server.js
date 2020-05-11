@@ -2,6 +2,7 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const ERRORS = require('errors');
+const path = require('path');
 
 // code 600 - database connection error
 ERRORS.create({
@@ -23,7 +24,7 @@ const MONGO_CLIENT = require("mongodb").MongoClient;
 const STRING_CONNECT = 'mongodb://127.0.0.1:27017';
 const PARAMETERS = {
     useNewUrlParser: true,
-   // useUnifiedTopology: true
+    useUnifiedTopology: true
 };
 
 // express
@@ -42,44 +43,48 @@ const credentials = {"key":privateKey, "cert":certificate};
 const TIMEOUT = 30; // 60 SEC
 let pageNotFound;
 
-const http = require('http');
 var httpsServer = HTTPS.createServer(credentials,app);
 httpsServer.listen(8888, '127.0.0.1', function() {
     console.log("Server running");
 });
 
-
+/*
 app.use("/",function(req,res,next){
     res.writeHead(200);
     res.end("HOME");
-});
-
+});*/
+app.get("/prova",function(req,res){
+    console.log("prova");
+})
 // API LOGIN
 app.post("/api/login",function(res,req,next){
+    console.log("API LOGIN")
     let username = req.body.user.split('.');
-    let password;
-
+    let password = req.body.pwd;
+    console.log(username);
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
-        if (err)
-            error(req, res, err, JSON.stringify(new ERRORS.DB_CONNECTION({})));
+        if (err){
+            res.send({"ris":"err"})
+        }
         else {
-            const DB = client.db('app');
-                collection.findOne({ "_id.nome": username[0],"_id.cognome": username[1],"_id.codice": username[2],}, function(err, dbUser) {
-                    if (err)
-                        error(req, res, err, JSON.stringify(new ERRORS.QUERY_EXECUTE({})));
+            const DB = client.db('App');
+            let collection = DB.collection('User');
+                collection.findOne({ "_id.nome": username[0],"_id.cognome": username[1],"_id.codice": parseInt(username[2])}, function(err, dbUser) {
+                    if (err){
+                        res.send({"ris":"err"})}
                     else {
                         if (dbUser == null){
                             console.log("Errore dbuser");
-                            error(req, res, null, JSON.stringify(new ERRORS.Http401Error({})));
+                            res.send({"ris":"errUser"})
                         }
                         else {  
-                            if (dbUser.password != password){                                
+                            if (dbUser.pwd != password){                                
                                 console.log("Errore dbpwd");
-                                error(req, res, err, JSON.stringify(new ERRORS.Http401Error({})));
+                                res.send({"ris":"errPwd"})
                             }
                             else {           
-                                console.log("Accesso eseguito")                     
-                                res.send({"ris":"ok"});
+                                console.log("Accesso eseguito");               
+                                res.send({"ris":"ok","rank":dbUser.rank});
                             }
                         }
                     }
@@ -91,30 +96,90 @@ app.post("/api/login",function(res,req,next){
 });
 
 //API QR
-const QRcode = require("qrcode");
+const QRcode = require("qr-image");
 function createNewQRCode(){
     MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
         if (err) throw err;
-        let dbo = db.db("App");
+        const DB = client.db('App');
         let data = new Date()
         let QrCode = { data: data, codice: Math.random(100) };
-        dbo.collection("customers").insertOne(QrCode, function(err, res) {
+        DB.collection("QRCode").insertOne(QrCode, function(err, res) {
           if (err) throw err;
           console.log("Nuovo QR Inserito");
-          db.close();
+          client.close();
         });
          
     });
 }
 
 
-
+/*
 QRcode.toString('{"nome":"aaaaa","cognome":"bbbbb"}',{type:'terminal'}, function (err, url) {
-    console.log(url)
+    //console.log(url)
   })
-app.use("api/QRCode",function(req,res,next){
-
+*/
+app.get("/api/newQRCode",function(req,res,next){
+    console.log("NEEE");
+    createNewQRCode();
 });
-app.use("api/QRCheck",function(req,res,next){
 
+
+
+app.get("/api/QRCode",function(req,res,next){ 
+    //res.sendFile(path.join(__dirname+'/qrcode/qrcode.html'));
+    
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"})
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('QRCode');
+            collection.findOne(
+                {},
+                { sort: { _id: -1 } },
+                (err, data) => {
+                    
+                        var code = QRcode.image(JSON.stringify(data), { type: 'png', ec_level: 'H', size: 10, margin: 0 });
+                        res.setHeader('Content-type', 'image/png');
+                        code.pipe(res);
+                      
+                   
+                },
+              );
+            
+            }  
+         
+    });
+    
 });
+app.post("/api/QRCheck",function(req,res,next){
+    let QRCode;
+    MONGO_CLIENT.connect(STRING_CONNECT, PARAMETERS, function(err, client) {
+        if (err){
+            res.send({"ris":"err"})
+        }
+        else {
+            const DB = client.db('App');
+            let collection = DB.collection('QRCode');
+            collection.findOne(
+                {},
+                { sort: { _id: -1 } },
+                (err, data) => {
+                   if(data._id == QRCode && data.data == QRCode ){
+                       insertLog(QrCode);
+                       res.send({"ris":"ok"});
+                   }else{
+                       res.send({"ris":"err"});
+                   }
+                },
+              );
+            
+            }  
+         
+    });
+});
+
+function insertLog(data){
+
+}
