@@ -1,0 +1,58 @@
+.kek{
+    margin : 7px;
+}
+h5{
+    margin-left: 6px;
+}
+.teamCard{
+    width: 300px;
+    height: 275px;
+    
+}
+.img{
+    width: 300px;
+    height: 100px;
+    align-content: center;
+}
+.contenitore{
+    align-content: center;
+    align-items: center;
+}
+.attivo{
+    background-color: rgb(183, 252, 183)
+}
+.Inattivo{
+    background-color: rgb(255, 169, 169)
+}
+.L{
+    background-color: rgb(179, 208, 255);
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.A{
+    background-color: rgb(255, 237, 179);
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.T{
+    background-color: rgb(183, 255, 177);
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.altezza1{
+    overflow-y: scroll ;
+    height: 40%; 
+    border-bottom-color: rgb(37, 60, 192);
+    border-bottom-style: dashed;
+}
+.altezza2{
+    margin-bottom: 0px;
+    overflow-y: scroll ;
+    height: 60%; 
+}

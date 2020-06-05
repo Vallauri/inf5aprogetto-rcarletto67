@@ -1,0 +1,64 @@
+.kek{
+    margin : 4px;
+}
+h5{
+    margin-left: 8px;
+}
+.R{
+    background-color: #ffc793;
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.L{
+    background-color: #b3d0ff;
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.I{
+    background-color: #c5c5c5;
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.F{
+    background-color: #a7ffa4;
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.kek{
+    margin: 10px;
+}
+.contenitore{
+    align-content: center;
+    align-items: center;
+    width: 100%;
+}
+.taskCard{
+    width: 300px;
+    height: 200px;
+    
+}
+.altezza1{
+    overflow-y: scroll ;
+    height: 40%; 
+    border-bottom-color: rgb(37, 60, 192);
+    border-bottom-style: dashed;
+}
+.altezza2{
+    margin-bottom: 0px;
+    overflow-y: scroll ;
+    height: 60%; 
+}
+.lol{
+    display:flex;
+    flex-direction: column;
+    
+}
+

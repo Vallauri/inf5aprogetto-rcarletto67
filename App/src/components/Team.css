@@ -1,0 +1,24 @@
+.kek{
+    margin :7px;
+}
+.teamCard{
+    min-width: 100px;
+    min-height: 150px;
+    width: 100%;
+    height: 200px;
+}
+.img{
+    width: 100px;
+    height: 100px;
+    align-content: center;
+}
+.contenitore{
+    align-content: center;
+    align-items: center;
+}
+.attivo{
+    background-color: rgb(183, 252, 183)
+}
+.Inattivo{
+    background-color: rgb(255, 169, 169)
+}

@@ -3,10 +3,20 @@ import Page from './pages/Page';
 import React from 'react';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch} from 'react-router-dom';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
+import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+
+
+
+
+
+
+
+
+
 
 /* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
@@ -24,22 +34,33 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { setupConfig } from "@ionic/react"
+
+setupConfig({
+  swipeBackEnabled: false,
+  hardwareBackButton: false
+});
+
 const App: React.FC = () => {
+  
+  
 
   return (
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
+        
           <Switch>
           <Route path="/page/Login" exact />
           <Route path="/page/Error" exact />
           <Route path="/" component={Menu} /> 
           </Switch>
           
-          <IonRouterOutlet id="main">
-            <Route path="/page/:name/" component={Page} exact />
+          <IonRouterOutlet id="main" >
+            <Route path="/page/:name" component={Page} exact />
             <Redirect from="/" to="/page/Login" exact />
           </IonRouterOutlet>
+         
         </IonSplitPane>
       </IonReactRouter>
     </IonApp>

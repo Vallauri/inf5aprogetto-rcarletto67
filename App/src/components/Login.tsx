@@ -14,7 +14,8 @@ interface ComponentProps {
 }
 interface ComponentState {
   user : string,
-  password: string
+  password: string,
+  isLoaded : boolean
 
 }
 
@@ -63,7 +64,7 @@ interface ComponentState {
 class Login extends React.Component< ComponentProps, ComponentState> {
   constructor(props) {
     super(props);
-    this.state = {user: '', password : ''};
+    this.state = {user: '', password : '', isLoaded : true};
     
     this.handleChangeUsr = this.handleChangeUsr.bind(this);
     this.handleChangePwd = this.handleChangePwd.bind(this);
@@ -83,18 +84,25 @@ class Login extends React.Component< ComponentProps, ComponentState> {
   handleSubmit(event) {
     
     // Chiamata al server nella callback setItem del localStorage
-    /*
+    
+    let username = this.state.user;
+    let password = this.state.password;
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: this.state.user, id: this.state.password })
+      headers: { 'Content-Type': 'application/json', "mode": 'no-cors' },
+      body: JSON.stringify({ user : username, pwd : password })
       };
-      fetch('https://jsonplaceholder.typicode.com/posts', requestOptions)
+      fetch('https://padellino.herokuapp.com/api/login', requestOptions)
       .then(response =>  response.json())
       .then(
         (result) => {
+          console.log(result);
           if(result["ris"] == "ok")
           {
+            if(result["tipo"] != null)
+               sessionStorage.setItem("userPrev", result["tipo"]);
+            sessionStorage.setItem("loggato", "si");
+            sessionStorage.setItem("team", result["team"]["idLeader"]);
             sessionStorage.setItem("user", this.state.user);
             window.location.href = "/page/Home";
           }
@@ -103,17 +111,15 @@ class Login extends React.Component< ComponentProps, ComponentState> {
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
         (error) => {
-          /*this.setState({
-            isLoaded: true,
-            error
-          }); //
-          alert("errore");
+          
+          alert("Errore :" + error);
         }
       )
-      */
-      sessionStorage.setItem("user", this.state.user);
-      window.location.href = "/page/Home";
-
+      
+      /*
+     sessionStorage.setItem("user", this.state.user);
+     window.location.href = "/page/Home";
+    */
     event.preventDefault();
   }
 
@@ -142,7 +148,7 @@ class Login extends React.Component< ComponentProps, ComponentState> {
           </IonItem>
           <IonItem>
             <IonLabel color="primary" position="fixed">Password</IonLabel>
-            <IonInput type="password" value={this.state.password} onChange={this.handleChangePwd} />
+            <IonInput type="password" value={this.state.password} onIonChange={this.handleChangePwd} />
           </IonItem>
           <IonIcon name="arrow-forward-outline"></IonIcon>
           <IonButton type="submit" fill="clear" expand="full" color="tertiary"> Entra </IonButton>

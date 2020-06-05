@@ -1,0 +1,61 @@
+h5{
+    margin : 6px;
+}
+.R{
+    background-color: rgb(255, 199, 147);
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.L{
+    background-color: rgb(179, 208, 255);
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.I{
+    background-color: rgb(197, 197, 197);
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.F{
+    background-color: rgb(167, 255, 164);
+    min-width: 150px;
+    min-height: 150px;
+    align-content: center;
+    align-items: center;
+}
+.kek{
+    margin: 10px;
+}
+.contenitore{
+    align-content: center;
+    align-items: center;
+    width: 100%;
+}
+.taskCard{
+    width: 300px;
+    height: 200px;
+    
+}
+.altezza1{
+    overflow-y: scroll ;
+    height: 40%; 
+    border-bottom-color: rgb(37, 60, 192);
+    border-bottom-style: dashed;
+}
+.altezza2{
+    margin-bottom: 0px;
+    overflow-y: scroll ;
+    height: 60%; 
+}
+.lol{
+    display:flex;
+    flex-direction: column;
+    
+}
+
